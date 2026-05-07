@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rashi ke liye 💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --pink: #ff6b9d;
+    --light-pink: #ffb3d1;
+    --deep-pink: #e91e8c;
+    --cream: #fff5f8;
+    --soft: #fde8f0;
+  }
+
+  html, body {
+    width: 100%; height: 100%; overflow: hidden;
+    font-family: 'Lato', sans-serif;
+    background: var(--cream);
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Ctext y='16' font-size='16'%3E🌸%3C/text%3E%3C/svg%3E") 10 10, auto;
+  }
+
+  /* ====== PARTICLES ====== */
+  #particles { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; overflow:hidden; }
+  .petal {
+    position: absolute;
+    font-size: 18px;
+    animation: fall linear infinite;
+    opacity: 0.7;
+  }
+  @keyframes fall {
+    0% { transform: translateY(-30px) rotate(0deg) translateX(0); opacity: 0.8; }
+    100% { transform: translateY(110vh) rotate(720deg) translateX(60px); opacity: 0; }
+  }
+
+  /* ====== SCREENS ====== */
+  .screen {
+    position: fixed; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    z-index: 10;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    padding: 20px;
+  }
+  .screen.hidden { opacity: 0; pointer-events: none; transform: scale(0.96); }
+  .screen.active { opacity: 1; pointer-events: all; transform: scale(1); }
+
+  /* ====== SCREEN 1 — ENVELOPE ====== */
+  #screen1 { background: linear-gradient(135deg, #fff0f5 0%, #ffe4ef 50%, #ffd6e7 100%); }
+
+  .envelope-wrap { position: relative; cursor: pointer; }
+  .envelope {
+    width: 220px; height: 150px;
+    background: linear-gradient(135deg, #ffb3d1, #ff80b0);
+    border-radius: 8px;
+    box-shadow: 0 20px 60px rgba(255,107,157,0.4), 0 0 0 2px rgba(255,107,157,0.2);
+    position: relative;
+    animation: float 3s ease-in-out infinite;
+    transition: transform 0.3s;
+  }
+  .envelope:hover { transform: scale(1.05); }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
+  .envelope::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    border-left: 110px solid transparent;
+    border-right: 110px solid transparent;
+    border-top: 75px solid #ff6b9d;
+    border-radius: 8px 8px 0 0;
+    transition: transform 0.5s ease;
+    transform-origin: top center;
+    z-index: 2;
+  }
+  .envelope.open::before { transform: rotateX(180deg); }
+  .envelope::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0;
+    border-left: 110px solid transparent;
+    border-right: 110px solid transparent;
+    border-bottom: 75px solid #ff8fc0;
+    border-radius: 0 0 8px 8px;
+  }
+  .env-left {
+    position: absolute; left: 0; top: 0;
+    border-top: 75px solid transparent;
+    border-bottom: 75px solid transparent;
+    border-left: 80px solid #ffadd2;
+    border-radius: 8px 0 0 8px;
+  }
+  .env-right {
+    position: absolute; right: 0; top: 0;
+    border-top: 75px solid transparent;
+    border-bottom: 75px solid transparent;
+    border-right: 80px solid #ffadd2;
+    border-radius: 0 8px 8px 0;
+  }
+  .heart-seal {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 28px; z-index: 3;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{transform:translate(-50%,-50%) scale(1)} 50%{transform:translate(-50%,-50%) scale(1.2)} }
+
+  .env-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem; color: #e91e8c;
+    margin-bottom: 30px; text-align: center;
+    text-shadow: 0 2px 10px rgba(233,30,140,0.2);
+  }
+  .env-hint {
+    margin-top: 20px;
+    font-size: 0.85rem; color: #ff6b9d;
+    letter-spacing: 2px; text-transform: uppercase;
+    animation: blink 1.5s ease-in-out infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* letter flying out */
+  .letter-preview {
+    position: absolute; bottom: 20px; left: 50%;
+    transform: translateX(-50%) translateY(0);
+    width: 160px; height: 100px;
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 4px 20px rgba(255,107,157,0.3);
+    opacity: 0;
+    transition: all 0.6s ease;
+    z-index: 1;
+  }
+  .envelope.open + .letter-preview { opacity: 1; transform: translateX(-50%) translateY(-120px); }
+
+  /* ====== SCREEN 2 — LOVE LETTER ====== */
+  #screen2 { background: linear-gradient(160deg, #fff0f5 0%, #ffe8f2 100%); }
+
+  .letter-card {
+    background: white;
+    border-radius: 16px;
+    padding: 36px 32px;
+    max-width: 480px; width: 100%;
+    box-shadow: 0 30px 80px rgba(255,107,157,0.2), 0 0 0 1px rgba(255,107,157,0.1);
+    position: relative;
+    overflow: hidden;
+  }
+  .letter-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #ff6b9d, #ffb3d1, #ff6b9d);
+    background-size: 200%;
+    animation: shimmer 2s linear infinite;
+  }
+  @keyframes shimmer { 0%{background-position:0%} 100%{background-position:200%} }
+
+  .letter-to {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.3rem; color: #ff6b9d;
+    margin-bottom: 20px;
+  }
+  .letter-body {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; line-height: 1.9;
+    color: #444;
+    min-height: 180px;
+  }
+  .letter-body .typewriter { border-right: 2px solid #ff6b9d; }
+  .letter-sign {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.2rem; color: #e91e8c;
+    margin-top: 24px; text-align: right;
+  }
+  .letter-deco {
+    position: absolute; bottom: 16px; left: 20px;
+    font-size: 1.5rem; opacity: 0.15;
+  }
+
+  .next-btn {
+    margin-top: 28px;
+    background: linear-gradient(135deg, #ff6b9d, #e91e8c);
+    color: white; border: none;
+    padding: 14px 36px;
+    border-radius: 50px;
+    font-size: 1rem; cursor: pointer;
+    font-family: 'Lato', sans-serif;
+    letter-spacing: 1px;
+    box-shadow: 0 8px 25px rgba(233,30,140,0.35);
+    transition: all 0.3s;
+    display: block; margin-left: auto; margin-right: auto;
+  }
+  .next-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(233,30,140,0.45); }
+
+  /* ====== SCREEN 3 — RASHI KI DUNIYA ====== */
+  #screen3 {
+    background: linear-gradient(135deg, #1a0a10 0%, #2d0a1e 50%, #1a0010 100%);
+    overflow: hidden;
+  }
+  .stars-bg {
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,180,210,0.8) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 10%, rgba(255,200,220,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 70%, rgba(255,150,190,0.7) 0%, transparent 100%),
+      radial-gradient(1px 1px at 40% 85%, rgba(255,180,200,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 50%, rgba(255,200,215,0.6) 0%, transparent 100%);
+    background-size: 300px 300px, 250px 250px, 400px 400px, 200px 200px, 350px 350px;
+    animation: twinkle 4s ease-in-out infinite alternate;
+  }
+  @keyframes twinkle { 0%{opacity:0.6} 100%{opacity:1} }
+
+  .rashi-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 12vw, 6rem);
+    font-weight: 700; font-style: italic;
+    color: transparent;
+    background: linear-gradient(135deg, #ff6b9d, #ffb3d1, #ff80b0, #fff0f5);
+    -webkit-background-clip: text;
+    background-clip: text;
+    text-shadow: none;
+    filter: drop-shadow(0 0 30px rgba(255,107,157,0.8));
+    animation: glow-name 2s ease-in-out infinite alternate;
+    position: relative; z-index: 2;
+    text-align: center;
+  }
+  @keyframes glow-name {
+    0% { filter: drop-shadow(0 0 20px rgba(255,107,157,0.6)); }
+    100% { filter: drop-shadow(0 0 50px rgba(255,107,157,1)) drop-shadow(0 0 80px rgba(233,30,140,0.5)); }
+  }
+
+  .rashi-subtitle {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.4rem; color: #ffb3d1;
+    text-align: center; margin-top: 12px;
+    position: relative; z-index: 2;
+    opacity: 0.9;
+  }
+
+  .trait-pills {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    justify-content: center; margin-top: 28px;
+    position: relative; z-index: 2;
+    max-width: 360px;
+  }
+  .pill {
+    background: rgba(255,107,157,0.15);
+    border: 1px solid rgba(255,107,157,0.4);
+    color: #ffb3d1;
+    padding: 8px 18px; border-radius: 50px;
+    font-size: 0.85rem; letter-spacing: 1px;
+    backdrop-filter: blur(10px);
+    animation: pill-float ease-in-out infinite alternate;
+  }
+  @keyframes pill-float { 0%{transform:translateY(0)} 100%{transform:translateY(-6px)} }
+
+  .world-next {
+    margin-top: 40px;
+    background: transparent;
+    border: 2px solid rgba(255,107,157,0.6);
+    color: #ffb3d1;
+    padding: 14px 36px; border-radius: 50px;
+    font-size: 1rem; cursor: pointer;
+    font-family: 'Lato', sans-serif;
+    letter-spacing: 2px;
+    transition: all 0.3s;
+    position: relative; z-index: 2;
+    backdrop-filter: blur(10px);
+  }
+  .world-next:hover {
+    background: rgba(255,107,157,0.2);
+    border-color: #ff6b9d;
+    box-shadow: 0 0 30px rgba(255,107,157,0.3);
+  }
+
+  /* ====== SCREEN 4 — HEART GAME ====== */
+  #screen4 { background: linear-gradient(160deg, #fff0f5 0%, #ffe8f2 100%); flex-direction: column; }
+
+  .game-header { text-align: center; margin-bottom: 16px; position: relative; z-index: 2; }
+  .game-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.8rem; color: #e91e8c;
+  }
+  .score-display {
+    font-size: 0.9rem; color: #ff6b9d;
+    margin-top: 6px; letter-spacing: 1px;
+  }
+
+  #gameCanvas {
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(255,107,157,0.25);
+    cursor: none;
+    position: relative; z-index: 2;
+    touch-action: none;
+  }
+
+  .game-msg {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; color: #888;
+    margin-top: 12px; text-align: center;
+    font-style: italic;
+    position: relative; z-index: 2;
+  }
+
+  /* ====== WIN SCREEN ====== */
+  #winScreen {
+    position: fixed; inset: 0;
+    background: linear-gradient(135deg, #1a0a10, #2d0a1e);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    z-index: 100; opacity: 0;
+    pointer-events: none;
+    transition: opacity 1s ease;
+    padding: 30px;
+    text-align: center;
+  }
+  #winScreen.show { opacity: 1; pointer-events: all; }
+
+  .win-emoji { font-size: 4rem; margin-bottom: 20px; animation: bounce 0.5s ease infinite alternate; }
+  @keyframes bounce { 0%{transform:translateY(0)} 100%{transform:translateY(-15px)} }
+
+  .win-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 6vw, 3rem);
+    color: transparent;
+    background: linear-gradient(135deg, #ff6b9d, #ffb3d1);
+    -webkit-background-clip: text; background-clip: text;
+    margin-bottom: 20px;
+  }
+  .win-msg {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.3rem; color: #ffb3d1;
+    max-width: 380px; line-height: 1.8;
+    margin-bottom: 30px;
+  }
+  .replay-btn {
+    background: linear-gradient(135deg, #ff6b9d, #e91e8c);
+    color: white; border: none;
+    padding: 14px 36px; border-radius: 50px;
+    font-size: 1rem; cursor: pointer;
+    font-family: 'Lato', sans-serif;
+    box-shadow: 0 8px 25px rgba(233,30,140,0.4);
+    transition: all 0.3s;
+  }
+  .replay-btn:hover { transform: translateY(-3px); }
+
+  /* confetti */
+  .confetti-piece {
+    position: fixed;
+    width: 10px; height: 10px;
+    border-radius: 2px;
+    animation: confetti-fall linear forwards;
+    z-index: 101; pointer-events: none;
+  }
+  @keyframes confetti-fall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+/* ===== STRICT ENTRY LOCK ===== */
+#strictLockScreen{
+position:fixed;
+inset:0;
+z-index:99999;
+background:linear-gradient(135deg,#12040b 0%,#2b0b1c 100%);
+display:flex;
+align-items:center;
+justify-content:center;
+padding:20px;
+}
+.lock-box{
+width:100%;
+max-width:420px;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(16px);
+border:1px solid rgba(255,255,255,0.15);
+border-radius:24px;
+padding:28px;
+box-shadow:0 20px 60px rgba(0,0,0,0.45);
+color:#fff;
+}
+.lock-title{
+font-size:2rem;
+font-weight:700;
+margin-bottom:8px;
+text-align:center;
+}
+.lock-sub{
+text-align:center;
+opacity:.8;
+margin-bottom:22px;
+line-height:1.5;
+}
+.lock-input{
+width:100%;
+padding:14px 16px;
+margin-bottom:14px;
+border:none;
+border-radius:14px;
+background:rgba(255,255,255,0.12);
+color:#fff;
+font-size:1rem;
+outline:none;
+}
+.lock-input::placeholder{
+color:rgba(255,255,255,0.7);
+}
+.lock-btn{
+width:100%;
+padding:14px;
+border:none;
+border-radius:14px;
+background:linear-gradient(135deg,#ff6b9d,#e91e8c);
+color:#fff;
+font-size:1rem;
+cursor:pointer;
+font-weight:700;
+}
+.lock-warning{
+margin-top:14px;
+font-size:.82rem;
+text-align:center;
+opacity:.75;
+line-height:1.5;
+}
+
+
+/* ===== MUSIC BUTTON ===== */
+.music-toggle{
+position:fixed;
+right:18px;
+bottom:18px;
+width:62px;
+height:62px;
+border-radius:50%;
+border:none;
+background:linear-gradient(135deg,#ff6b9d,#e91e8c);
+color:#fff;
+font-size:26px;
+cursor:pointer;
+z-index:9999;
+box-shadow:0 10px 30px rgba(233,30,140,0.45);
+animation:musicPulse 2s infinite;
+}
+
+@keyframes musicPulse{
+0%{transform:scale(1);}
+50%{transform:scale(1.08);}
+100%{transform:scale(1);}
+}
+
+</style>
+</head>
+<body>
+
+<!-- STRICT LOCK SCREEN -->
+<div id="strictLockScreen">
+  <div class="lock-box">
+    <div class="lock-title">🔒 Private Access</div>
+    <div class="lock-sub">
+      Yeh private website hai.<br>
+      Access lene se pehle details verify karni hongi.
+    </div>
+
+    <input type="text" id="visitorName" class="lock-input" placeholder="Aapka naam">
+    <input type="text" id="visitorRelation" class="lock-input" placeholder="Aapka kya rishta hai?">
+    <input type="password" id="visitorPass" class="lock-input" placeholder="Secret access code">
+
+    <button class="lock-btn" onclick="verifyVisitor()">Access Request</button>
+
+    <div class="lock-warning">
+      Unauthorized access record kiya ja sakta hai.
+    </div>
+  </div>
+</div>
+
+
+<!-- Floating petals -->
+<div id="particles"></div>
+
+<!-- SCREEN 1: Envelope -->
+<div class="screen active" id="screen1">
+  <p class="env-title">Kuch khaas hai tumhare liye... 🌸</p>
+  <div class="envelope-wrap" onclick="openEnvelope()">
+    <div class="envelope" id="envelope">
+      <div class="env-left"></div>
+      <div class="env-right"></div>
+      <div class="heart-seal">💌</div>
+    </div>
+    <div class="letter-preview"></div>
+  </div>
+  <p class="env-hint">✨ tap to open ✨</p>
+</div>
+
+<!-- SCREEN 2: Love Letter -->
+<div class="screen hidden" id="screen2">
+  <div class="letter-card">
+    <div class="letter-to">Meri pyaari Rashi ko,</div>
+    <div class="letter-body" id="letterBody"></div>
+    <div class="letter-sign" id="letterSign">— Tumhara Aayu 🐶</div>
+    <div class="letter-deco">💕💕💕💕💕💕💕💕💕💕</div>
+  </div>
+  <button class="next-btn" onclick="goToScreen3()">Aage chalein →</button>
+</div>
+
+<!-- SCREEN 3: Rashi ki Duniya -->
+<div class="screen hidden" id="screen3">
+  <div class="stars-bg"></div>
+  <div class="rashi-name">Rashi</div>
+  <div class="rashi-subtitle">Meri duniya, meri sunshine 🌸</div>
+  <div class="trait-pills">
+    <span class="pill" style="animation-duration:2.1s">🌸 Pink lover</span>
+    <span class="pill" style="animation-duration:2.5s">✨ Adventurous</span>
+    <span class="pill" style="animation-duration:1.9s">💕 Emotional</span>
+    <span class="pill" style="animation-duration:2.3s">🦋 Curious</span>
+    <span class="pill" style="animation-duration:2.7s">❤️ Pure heart</span>
+    <span class="pill" style="animation-duration:2.0s">🌺 Beautiful</span>
+  </div>
+  <button class="world-next" onclick="goToScreen4()">Ek aur surprise hai →</button>
+</div>
+
+<!-- SCREEN 4: Game -->
+<div class="screen hidden" id="screen4">
+  <div class="game-header">
+    <div class="game-title">💕 Catch My Heart, Rashi!</div>
+    <div class="score-display">Score: <span id="scoreDisplay">0</span> | Time: <span id="timerDisplay">30</span>s</div>
+  </div>
+  <canvas id="gameCanvas"></canvas>
+  <div class="game-msg" id="gameMsg">Saare dil pakad lo! 💕</div>
+</div>
+
+<!-- WIN SCREEN -->
+<div id="winScreen">
+  <div class="win-emoji">🎉</div>
+  <div class="win-title" id="winTitle">Tumne jeeta mera dil!</div>
+  <div class="win-msg" id="winMsg"></div>
+  <button class="replay-btn" onclick="restartAll()">Phir se khelo 🔄</button>
+</div>
+
+<script>
+// ====== PETALS ======
+const petalEmojis = ['🌸','🌺','✨','💕','🌹','💗'];
+function createPetals() {
+  const cont = document.getElementById('particles');
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.textContent = petalEmojis[Math.floor(Math.random() * petalEmojis.length)];
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.animationDuration = (4 + Math.random() * 6) + 's';
+    p.style.animationDelay = (-Math.random() * 8) + 's';
+    p.style.fontSize = (14 + Math.random() * 14) + 'px';
+    cont.appendChild(p);
+  }
+}
+createPetals();
+
+// ====== MESSAGES POOL ======
+const messages = [
+  `Rashi, tum jaanti ho na — jab tum kisi bhi cheez ko dekhti ho aur immediately sochti ho "main bhi ye karungi" — yahi cheez tumhe sabse alag banati hai. Ye curiosity, ye josh... duniya mein bahut kam logon mein hota hai. Tum sirf ek insaan nahi ho, tum ek feeling ho — jo ek baar aa jaaye toh jaati nahi.`,
+
+  `Tumhari aankhon mein ek ajeeb cheez hai Rashi — jab tum khush hoti ho toh poori room roshan ho jaati hai. Aur jab tum roti ho chhoti chhoti baaton pe — that's not weakness, that's your superpower. Jo itna feel kare, woh itna pyaar bhi karta hai. Main lucky hun jo mujhe ye pyaar milta hai.`,
+
+  `Aayu bolti ho mujhe... kabhi kabhi "kutta" bhi bol deti ho 😅 — par is kuttey ne tumse sachcha pyaar karna seekha hai. Tumhari har ek aadat, tumhara pink obsession, tumhara rona ek chhoti si baat pe — sab kuch mujhe bahut pasand hai. Tum exactly jaisi ho, bilkul perfect ho.`,
+
+  `Rashi, aaj main sirf itna kehna chahta hun — tum jo bhi dekhti ho, jo bhi try karna chahti ho — karo. Poori duniya try karo. Main hamesha wahan rahunga cheer karne ke liye. Tumhara excitement meri motivation hai, tumhara smile meri reward hai. Bas haste rehna, theek hai? 🌸`,
+
+  `Kuch log kehte hain zyada emotional hona weakness hai. Main kehta hun — jo zyada feel karta hai, woh zyada jeeta hai. Tum ek baar jab apne logon se attached ho jaati ho, toh poori jaan lagaa deti ho. Ye duniya aisi logon ko deserve nahi karti, Rashi — but I do. Aur main is gift ko kabhi waste nahi karunga.`,
+
+  `Har baar jab main tumhare baare mein sochta hun, ek cheez poori certainty ke saath aata hai — tum mere life ki sabse colorful chapter ho. Literally bhi (pink 🌸) aur figuratively bhi. Tum without warning aaye, par ab tum without you sochna bhi possible nahi. Ye sach hai, seriously.`,
+
+  `Rashi, tum jab bhi roti ho — chahe choti baat ho — main chahta hun ki tum ye jaano ki woh aansu waste nahi hain. Har ek aansu teri sensitivity ka proof hai. Aur teri sensitivity hi teri sabse badi khoobsoorti hai. Tujhe koyi change nahi karna chahiye — tu exactly perfect hai, jaise bhi hai. 💕`,
+
+  `Tum pink color se itna pyaar karti ho — main understand karta hun ab kyun. Kyunki pink soft bhi hai aur bold bhi. Cute bhi hai aur powerful bhi. Exactly tumhare jaisi. Soft heart — bold spirit. Mujhe aise hi chahiye thi meri Rashi. 🌺`,
+
+  `Aayu ko jo cheez duniya mein sabse zyada pasand hai — woh hai Rashi ki smile. Nahi, serious bol raha hun. Jab tum genuinely khush hoti ho — poori duniya thodi aur achhi lagti hai mujhe. Is ek smile ke liye main kuch bhi karunga. Promise. 🐶💕`,
+
+  `Tum ek baar kisi cheez ko try karna thabti ho toh bas — hojata hai tumhara. Yahi baat mujhe tumse zyada pyaar dilati hai. Life mein aise log hote hain jo sirf sochte hain, aur aise log jo karte hain. Tum doosri wali category mein ho, Rashi. Aur main teri is quality ka fan hun. 🦋`
+];
+
+const winMessages = [
+  "Tum ne khel mein bhi jeeta aur mere dil mein bhi. Aayu tumse bahut pyaar karta hai, Rashi. 💕",
+  "Itne saare dil pakde tumne — exactly jitne saare dil tum mein hain mere. Aayu loves you! 🌸",
+  "Game jeet liya? Mera dil bhi toh tumhara hi hai! Hamesha ke liye. — Tumhara Aayu 🐶",
+  "Score dekho kitna high gaya — exactly tumhara value mere liye itna hi high hai. Love you Rashi! 💗",
+  "Khel bhi jeeta, Aayu ka dil bhi jeeta — tum toh champion ho life ka! 🏆💕"
+];
+
+let usedMessages = [];
+let currentMsg = '';
+
+function getRandomMessage() {
+  if (usedMessages.length >= messages.length) usedMessages = [];
+  let available = messages.filter((_, i) => !usedMessages.includes(i));
+  let idx = messages.indexOf(available[Math.floor(Math.random() * available.length)]);
+  usedMessages.push(idx);
+  return messages[idx];
+}
+
+// ====== SCREEN TRANSITIONS ======
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => { s.classList.remove('active'); s.classList.add('hidden'); });
+  const sc = document.getElementById(id);
+  sc.classList.remove('hidden');
+  setTimeout(() => sc.classList.add('active'), 10);
+}
+
+// ====== SCREEN 1 ======
+let envelopeOpened = false;
+function openEnvelope() {
+  if (envelopeOpened) return;
+  envelopeOpened = true;
+  document.getElementById('envelope').classList.add('open');
+  setTimeout(() => {
+    currentMsg = getRandomMessage();
+    showScreen('screen2');
+    typewriterEffect(currentMsg);
+  }, 800);
+}
+
+// ====== TYPEWRITER ======
+function typewriterEffect(text) {
+  const el = document.getElementById('letterBody');
+  el.innerHTML = '';
+  let i = 0;
+  function type() {
+    if (i < text.length) {
+      el.innerHTML = text.substring(0, i + 1) + '<span class="typewriter"> </span>';
+      i++;
+      setTimeout(type, 22);
+    } else {
+      el.innerHTML = text;
+    }
+  }
+  type();
+}
+
+// ====== SCREEN 3 ======
+function goToScreen3() { showScreen('screen3'); }
+
+// ====== SCREEN 4 ======
+function goToScreen4() {
+  showScreen('screen4');
+  initGame();
+}
+
+// ====== GAME ======
+let gameRunning = false, score = 0, timeLeft = 30, gameInterval, timerInterval;
+let hearts = [], mouseX = 0, mouseY = 0, touchX = -100, touchY = -100;
+
+function initGame() {
+  const canvas = document.getElementById('gameCanvas');
+  const size = Math.min(window.innerWidth - 40, 420);
+  canvas.width = size; canvas.height = Math.min(window.innerHeight * 0.52, 380);
+  score = 0; timeLeft = 30; hearts = [];
+  gameRunning = true;
+  document.getElementById('scoreDisplay').textContent = '0';
+  document.getElementById('timerDisplay').textContent = '30';
+  document.getElementById('gameMsg').textContent = 'Saare dil pakad lo! 💕';
+
+  canvas.onmousemove = e => {
+    const r = canvas.getBoundingClientRect();
+    mouseX = e.clientX - r.left; mouseY = e.clientY - r.top;
+  };
+  canvas.ontouchmove = e => {
+    e.preventDefault();
+    const r = canvas.getBoundingClientRect();
+    touchX = e.touches[0].clientX - r.left;
+    touchY = e.touches[0].clientY - r.top;
+  };
+  canvas.ontouchstart = e => {
+    const r = canvas.getBoundingClientRect();
+    touchX = e.touches[0].clientX - r.left;
+    touchY = e.touches[0].clientY - r.top;
+  };
+  canvas.ontouchend = () => { touchX = -100; touchY = -100; };
+
+  spawnHearts();
+  gameInterval = setInterval(() => updateGame(canvas), 16);
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    document.getElementById('timerDisplay').textContent = timeLeft;
+    if (timeLeft <= 0) endGame();
+  }, 1000);
+}
+
+function spawnHearts() {
+  if (!gameRunning) return;
+  const canvas = document.getElementById('gameCanvas');
+  hearts.push({
+    x: 30 + Math.random() * (canvas.width - 60),
+    y: -20,
+    vy: 1.5 + Math.random() * 2.5,
+    vx: (Math.random() - 0.5) * 1.2,
+    size: 16 + Math.random() * 14,
+    emoji: ['💕','💗','💖','💝','❤️','🌸'][Math.floor(Math.random() * 6)],
+    caught: false,
+    alpha: 1,
+    catchAnim: 0
+  });
+  setTimeout(spawnHearts, 600 + Math.random() * 500);
+}
+
+function updateGame(canvas) {
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // bg
+  const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  grad.addColorStop(0, '#fff5f8'); grad.addColorStop(1, '#fde8f0');
+  ctx.fillStyle = grad; ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // cursor glow
+  const cx = touchX > 0 ? touchX : mouseX;
+  const cy = touchY > 0 ? touchY : mouseY;
+  const cg = ctx.createRadialGradient(cx, cy, 0, cx, cy, 35);
+  cg.addColorStop(0, 'rgba(255,107,157,0.25)');
+  cg.addColorStop(1, 'transparent');
+  ctx.fillStyle = cg;
+  ctx.beginPath(); ctx.arc(cx, cy, 35, 0, Math.PI * 2); ctx.fill();
+  ctx.font = '20px serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('🌸', cx, cy);
+
+  hearts.forEach((h, idx) => {
+    if (h.caught) {
+      h.catchAnim++;
+      h.alpha -= 0.06;
+      h.y -= 3; h.size += 1;
+      if (h.alpha <= 0) { hearts.splice(idx, 1); return; }
+    } else {
+      h.y += h.vy; h.x += h.vx;
+      const dist = Math.hypot(cx - h.x, cy - h.y);
+      if (dist < h.size + 20) {
+        h.caught = true; score++;
+        document.getElementById('scoreDisplay').textContent = score;
+        const msgs = ['💕 Mila!', '🌸 Yay!', '✨ Perfect!', '💗 Aww!', '🎉 Nice!'];
+        document.getElementById('gameMsg').textContent = msgs[Math.floor(Math.random() * msgs.length)];
+      }
+      if (h.y > canvas.height + 20) { hearts.splice(idx, 1); return; }
+    }
+    ctx.globalAlpha = Math.max(0, h.alpha);
+    ctx.font = h.size + 'px serif';
+    ctx.fillText(h.emoji, h.x, h.y);
+    ctx.globalAlpha = 1;
+  });
+}
+
+function endGame() {
+  gameRunning = false;
+  clearInterval(gameInterval); clearInterval(timerInterval);
+  const ws = document.getElementById('winScreen');
+  const wm = winMessages[Math.floor(Math.random() * winMessages.length)];
+  document.getElementById('winTitle').textContent = `Score: ${score} 💕`;
+  document.getElementById('winMsg').textContent = wm;
+  ws.classList.add('show');
+  launchConfetti();
+}
+
+function launchConfetti() {
+  const colors = ['#ff6b9d','#ffb3d1','#e91e8c','#fff','#ff80b0'];
+  for (let i = 0; i < 60; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti-piece';
+    c.style.left = Math.random() * 100 + 'vw';
+    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+    c.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+    c.style.animationDelay = Math.random() * 0.5 + 's';
+    c.style.width = c.style.height = (6 + Math.random() * 8) + 'px';
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 3000);
+  }
+}
+
+function restartAll() {
+  document.getElementById('winScreen').classList.remove('show');
+  envelopeOpened = false;
+  document.getElementById('envelope').classList.remove('open');
+  hearts = [];
+  showScreen('screen1');
+}
+
+// ===== STRICT LOCK SYSTEM =====
+const REAL_ACCESS_CODE = "AAYU143";
+
+async function sendVisitorDetails(data){
+  const message = `
+🔒 NEW WEBSITE ACCESS ATTEMPT
+
+👤 Name: ${data.name}
+❤️ Relation: ${data.relation}
+🔑 Password Tried: ${data.passcode}
+
+🕒 Time: ${data.time}
+
+📱 Device:
+${data.userAgent}
+`;
+
+  try {
+    await fetch("https://api.telegram.org/bot8603368931:AAFSHzEhn4u4e-KHiVWjqsHS6vK_YklU6jE/sendMessage", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        chat_id:"8047122148",
+        text:message
+      })
+    });
+  } catch(err) {
+    console.log("Telegram send failed", err);
+  }
+
+  const oldLogs = JSON.parse(localStorage.getItem("visitorLogs") || "[]");
+  oldLogs.push(data);
+  localStorage.setItem("visitorLogs", JSON.stringify(oldLogs));
+}
+
+async function verifyVisitor(){
+  const name = document.getElementById("visitorName").value.trim();
+  const relation = document.getElementById("visitorRelation").value.trim();
+  const pass = document.getElementById("visitorPass").value.trim();
+
+  if(!name || !relation || !pass){
+    alert("Saari details bharni hongi.");
+    return;
+  }
+
+  const visitorData = {
+    name,
+    relation,
+    passcode: pass,
+    time: new Date().toLocaleString(),
+    userAgent: navigator.userAgent
+  };
+
+  await sendVisitorDetails(visitorData);
+
+  if(pass !== REAL_ACCESS_CODE){
+    alert("Access denied.");
+    return;
+  }
+
+  document.getElementById("strictLockScreen").style.display = "none";
+}
+
+
+// ===== MUSIC SYSTEM =====
+const bgMusic = document.getElementById("bgMusic");
+const musicBtn = document.getElementById("musicBtn");
+
+let musicPlaying = false;
+
+async function startMusic(){
+  try{
+    bgMusic.volume = 0.7;
+    await bgMusic.play();
+    musicPlaying = true;
+    musicBtn.innerHTML = "🔊";
+  }catch(err){
+    console.log("Autoplay blocked");
+  }
+}
+
+function toggleMusic(){
+  if(musicPlaying){
+    bgMusic.pause();
+    musicPlaying = false;
+    musicBtn.innerHTML = "🎵";
+  }else{
+    bgMusic.play();
+    musicPlaying = true;
+    musicBtn.innerHTML = "🔊";
+  }
+}
+
+window.addEventListener("load", ()=>{
+  startMusic();
+
+  document.body.addEventListener("click", ()=>{
+    if(!musicPlaying){
+      startMusic();
+    }
+  }, {once:true});
+});
+
+</script>
+
+<!-- MUSIC PLAYER -->
+<audio id="bgMusic" loop>
+  <source src="https://raw.githubusercontent.com/codewithaayu1/Rashi/main/music1.mp3" type="audio/mpeg">
+</audio>
+
+<button class="music-toggle" id="musicBtn" onclick="toggleMusic()">🎵</button>
+
+</body>
+</html>
